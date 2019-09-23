@@ -1,2 +1,0 @@
-void system_init() {
-}
