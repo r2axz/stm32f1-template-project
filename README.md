@@ -8,6 +8,5 @@ Note: this project does not support C++;
 
 ## TODO
 
-- add .gitignore;
 - add include files;
 - get rid of __libc_init_array;
