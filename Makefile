@@ -10,8 +10,8 @@ STFLASH	= st-flash
 STUTIL	= st-util
 OPENOCD	= openocd
 
-STARTUP = stm32/startup/startup_stm32f103x8.s
-LDSCRIPT = stm32/linker/STM32F103X8_FLASH.ld
+STARTUP = stm32/startup/startup_stm32f103xb.s
+LDSCRIPT = stm32/linker/STM32F103XB_FLASH.ld
 
 CFLAGS = -mthumb -mcpu=cortex-m3 -Wall -pedantic -O3 -ggdb
 LDFLAGS = -T$(LDSCRIPT) --specs=nosys.specs
