@@ -33,7 +33,11 @@ $(TARGET).elf: $(OBJS)
 %.o: %.s
 	@$(CC) $(AFLAGS) -c $< -o $@
 
-.PHONY: clean
+.PHONY: flash
+flash: all
+	@$(STFLASH) --format ihex write $(TARGET).hex
+
+.PHONY: size
 size:
 	@$(SIZE) $(TARGET).elf
 
