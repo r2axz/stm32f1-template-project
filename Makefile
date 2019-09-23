@@ -59,4 +59,8 @@ size:
 
 .PHONY: clean
 clean:
-	rm -f $(OBJS) $(STARTUP)
+	rm -rf $(BUILD_DIR)
+
+.PHONY: distclean
+distclean: clean
+	rm -rf $(TARGET).elf $(TARGET).hex
