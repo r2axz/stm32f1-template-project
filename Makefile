@@ -11,10 +11,12 @@ STUTIL	= st-util
 OPENOCD	= openocd
 
 # STM32Cube Path
-STM32CUBE 		= ${STM32CUBE_PATH}
-STM32_STARTUP 	= $(STM32CUBE)/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/startup_stm32f103xb.s
-STM32_SYSINIT	= $(STM32CUBE)/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/system_stm32f1xx.c
-STM32_LDSCRIPT 	= $(STM32CUBE)/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/linker/STM32F103XB_FLASH.ld
+STM32CUBE 			= ${STM32CUBE_PATH}
+STM32_STARTUP 		= startup_stm32f103xb.s
+STM32_STARTUP_PATH 	= $(STM32CUBE)/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/
+STM32_SYSINIT		= system_stm32f1xx.c
+STM32_SYSINIT_PATH 	= $(STM32CUBE)/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/
+STM32_LDSCRIPT 		= $(STM32CUBE)/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/linker/STM32F103XB_FLASH.ld
 
 STM32_INCLUDES	+= -I$(STM32CUBE)/Drivers/CMSIS/Core/Include
 STM32_INCLUDES	+= -I$(STM32CUBE)/Drivers/CMSIS/Core_A/Include
@@ -29,8 +31,7 @@ CFLAGS = $(CFLAGS_DEFINES) $(STM32_INCLUDES) $(CFLAGS_CPUFLAGS) $(CFLAGS_WARNING
 
 LDFLAGS = -T$(STM32_LDSCRIPT) --specs=nosys.specs
 
-OBJS = $(SRCS:.c=.o) $(STM32_SYSINIT:.c=.o) $(STM32_STARTUP:.s=.o)
-
+OBJS = $(SRCS:.c=.o) $(STM32_STARTUP:.s=.o) $(STM32_SYSINIT:.c=.o)
 all: $(TARGET).hex size
 
 $(TARGET).hex: $(TARGET).elf
@@ -39,11 +40,14 @@ $(TARGET).hex: $(TARGET).elf
 $(TARGET).elf: $(OBJS)
 	@$(CC) $(LDFLAGS) $^ -o $@
 
-%.o: %.c
+$(STM32_STARTUP:.s=.o): $(STM32_STARTUP_PATH)/$(STM32_STARTUP)
+	@$(CC) -c $< -o $@
+
+$(STM32_SYSINIT:.c=.o): $(STM32_SYSINIT_PATH)/$(STM32_SYSINIT)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-%.o: %.s
-	@$(CC) $(AFLAGS) -c $< -o $@
+%.o: %.c
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: flash
 flash: all
