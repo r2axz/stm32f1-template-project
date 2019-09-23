@@ -13,9 +13,9 @@ OPENOCD	= openocd
 # STM32Cube Path
 STM32CUBE 			= ${STM32CUBE_PATH}
 STM32_STARTUP 		= startup_stm32f103xb.s
-STM32_STARTUP_PATH 	= $(STM32CUBE)/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/
+STM32_STARTUP_PATH 	= $(STM32CUBE)/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc
 STM32_SYSINIT		= system_stm32f1xx.c
-STM32_SYSINIT_PATH 	= $(STM32CUBE)/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/
+STM32_SYSINIT_PATH 	= $(STM32CUBE)/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates
 STM32_LDSCRIPT 		= $(STM32CUBE)/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/linker/STM32F103XB_FLASH.ld
 
 STM32_INCLUDES	+= -I$(STM32CUBE)/Drivers/CMSIS/Core/Include
