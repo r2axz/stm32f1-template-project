@@ -1,6 +1,6 @@
 # General Target Settings
-TARGET = stm32f1-template-project
-SRCS = main.c
+TARGET = stm32f103c8t6-playground
+SRCS = main.c sys_init.c
 
 # Toolchain & Utils
 CC		= arm-none-eabi-gcc
