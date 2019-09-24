@@ -72,3 +72,14 @@ to remove object, dependency, and firmware files.
 
 Currently the Makefile uses STM32F103XB_FLASH.ld, which defines 128K flash size.
 However, stm32f103c8t6 has 64K flash. Make sure firmware fits MCU memory.
+
+## Documentation
+
+- [STM32F103C8T6 Datasheet](
+    https://www.st.com/resource/en/datasheet/stm32f103c8.pdf)
+- [STM32F103C8T6 Reference Manual](
+    https://www.st.com/content/ccc/resource/technical/document/reference_manual/59/b9/ba/7f/11/af/43/d5/CD00171190.pdf/files/CD00171190.pdf/jcr:content/translations/en.CD00171190.pdf)
+- [Nokia 5110 Display Controller Datasheet](
+    https://www.sparkfun.com/datasheets/LCD/Monochrome/Nokia5110.pdf)
+- [Cortex-M3 Devices Generic User Guide](
+    http://infocenter.arm.com/help/topic/com.arm.doc.dui0552a/DUI0552A_cortex_m3_dgug.pdf)
