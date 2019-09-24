@@ -31,8 +31,6 @@ LDFLAGS = $(CPUFLAGS) -T$(STM32_LDSCRIPT) --specs=nosys.specs
 BUILD_DIR = build
 OBJS += $(SRCS:%.c=$(BUILD_DIR)/%.o)
 OBJS += $(STM32_SYSINIT:%.c=$(BUILD_DIR)/%.o)
-DEPS += $(SRCS:%.c=$(BUILD_DIR)/%.d)
-DEPS += $(STM32_SYSINIT:%.c=$(BUILD_DIR)/%.d)
 STARTUP += $(STM32_STARTUP:%.s=$(BUILD_DIR)/%.o)
 
 all: $(TARGET).hex size
@@ -43,15 +41,11 @@ $(TARGET).hex: $(TARGET).elf
 $(TARGET).elf: $(OBJS) $(STARTUP)
 	$(CC) $(LDFLAGS) $^ -o $@
 
-$(OBJS): $(BUILD_DIR)/%.o: %.c
+$(BUILD_DIR)/%.o: %.c
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(DEPS): $(BUILD_DIR)/%.d: %.c
-	mkdir -p $(@D)
-	$(CC) $(CFLAGS) $< -MM -MT $(@:.d=.o) > $@
-
-$(STARTUP): $(BUILD_DIR)/%.o: %.s
+$(BUILD_DIR)/%.o: %.s
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
 
@@ -70,5 +64,3 @@ clean:
 .PHONY: distclean
 distclean: clean
 	rm -rf $(TARGET).elf $(TARGET).hex
-
--include $(DEPS)
