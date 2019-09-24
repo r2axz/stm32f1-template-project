@@ -14,14 +14,10 @@ Install the following software:
 - [arm-none-eabi toolchain](
     https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads)
 - [open source stlink](<https://github.com/texane/stlink>)
-- ~~[openocd](<https://github.com/ntfreak/openocd>)~~
 - [STM32CubeF1](
     <https://www.st.com/en/embedded-software/stm32cubef1.html>)
 
-Note: Since st-util allows debugging with gdb, I don't think openocd
-is really needed at this point.
-
-ARM toolchain, stlink, and ~~openocd~~ must be added to PATH (use ~/.bash_profile).
+ARM toolchain, stlink, and must be added to PATH (use ~/.bash_profile).
 Assuming everything is installed in ~/stm32/:
 
 ```bash
@@ -29,8 +25,6 @@ Assuming everything is installed in ~/stm32/:
 export PATH=~/stm32/gcc-arm-none-eabi/bin:$PATH
 # add stlink path
 export PATH=~/stm32/stlink-install/bin:$PATH
-# add openocd
-export PATH=~/stm32/openocd-install/bin:$PATH
 ```
 
 Path to STM32CubeF1 should be also exported (use ~/.bash_profile):
