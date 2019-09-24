@@ -27,6 +27,7 @@ DEBUG 			= -ggdb
 
 CFLAGS = $(DEFINES) $(STM32_INCLUDES) $(CPUFLAGS) $(WARNINGS) $(OPTIMIZATION) $(DEBUG) 
 LDFLAGS = $(CPUFLAGS) -T$(STM32_LDSCRIPT) --specs=nosys.specs
+DEPFLAGS = -MT $@ -MMD -MP -MF $(BUILD_DIR)/$*.d
 
 BUILD_DIR = build
 OBJS += $(SRCS:%.c=$(BUILD_DIR)/%.o)
@@ -43,11 +44,15 @@ $(TARGET).elf: $(OBJS) $(STARTUP)
 
 $(BUILD_DIR)/%.o: %.c
 	mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(DEPFLAGS) $(CFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/%.o: %.s
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
+
+DEPFILES := $(OBJS:%.o=%.d)
+$(DEPFILES):
+-include $(DEPFILES)
 
 .PHONY: flash
 flash: all
