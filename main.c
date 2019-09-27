@@ -3,7 +3,8 @@
 
 void dummy_delay(unsigned int count) {
     volatile unsigned int _count = count;
-    while(_count--);
+    while (_count--)
+        ;
 }
 
 int main() {

@@ -8,7 +8,8 @@ int sys_configure_clock() {
     // Enable HSE clock source
     RCC->CR |= RCC_CR_HSEON;
     // Wait for HSE to start
-    while (!(RCC->CR & RCC_CR_HSERDY) && timeout--);
+    while (!(RCC->CR & RCC_CR_HSERDY) && timeout--)
+        ;
     // Cannot start HSE
     if (!timeout) {
         return -1;
@@ -30,11 +31,13 @@ int sys_configure_clock() {
     // Enable PLL
     RCC->CR |= RCC_CR_PLLON;
     // Wait for PLL ready
-    while (!(RCC->CR & RCC_CR_PLLRDY));
+    while (!(RCC->CR & RCC_CR_PLLRDY))
+        ;
     // Switch to PLL as clock source
     RCC->CFGR &= ~RCC_CFGR_SW;
     RCC->CFGR |= RCC_CFGR_SW_PLL;
     // Wait while switching to PLL
-    while ((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_1);
+    while ((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_1)
+        ;
     return 0;
 }
