@@ -136,7 +136,7 @@ listed in the SRCS variable of the Makefile.
 The __cppcheck job__ uses __cppcheck__ with the following options:
 
 ```bash
-    cppcheck --enable=all --error-exitcode=1
+cppcheck --enable=all --error-exitcode=1
 ```
 
 ### Build Stage
