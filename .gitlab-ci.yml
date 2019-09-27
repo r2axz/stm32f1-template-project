@@ -1,0 +1,59 @@
+stages:
+  - lint
+  - analyze
+  - build
+
+job markdown lint:
+  stage: lint
+  script:
+    - find . -type f -iname "*.md" | xargs markdownlint 2>&1 | tee markdown-errors.txt
+  artifacts:
+    when: on_failure
+    paths:
+      - markdown-errors.txt
+  tags:
+    - stm32
+    - linux
+
+job clang-format check:
+  stage: lint
+  script:
+    - find -regex '.*/.*\.\(c\|cpp\|h\)$' -print0 |
+      xargs -0 -I {} sh -c "echo -n Checking '{} ...' &&
+      clang-format {} | diff {} - | grep -q ^ &&
+      echo 'failed' && echo {} >> clang-format-wrong.txt && exit 1 ||
+      echo ok"
+  artifacts:
+    when: on_failure
+    paths:
+      - clang-format-wrong.txt
+  tags:
+    - stm32
+    - linux
+  
+job cppcheck:
+  stage: analyze
+  script:
+    - make cppcheck
+  artifacts:
+    when: on_failure
+    paths:
+      - cppcheck-report.txt
+  tags:
+    - stm32
+    - linux
+
+job build:
+  stage: build
+  variables:
+    TARGET_NAME: $CI_PROJECT_NAME-$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA
+  script:
+    - echo $TARGET_NAME
+    - make TARGET=$TARGET_NAME
+  artifacts:
+    when: on_success
+    paths:
+      - $TARGET_NAME.hex
+  tags:
+    - stm32
+    - linux

@@ -8,6 +8,7 @@ OBJCOPY = arm-none-eabi-objcopy
 SIZE 	= arm-none-eabi-size
 STFLASH	= st-flash
 STUTIL	= st-util
+CPPCHECK = cppcheck
 
 # STM32Cube Path
 STM32CUBE 			= ${STM32CUBE_PATH}
@@ -29,11 +30,15 @@ CFLAGS = $(DEFINES) $(STM32_INCLUDES) $(CPUFLAGS) $(WARNINGS) $(OPTIMIZATION) $(
 LDFLAGS = $(CPUFLAGS) -T$(STM32_LDSCRIPT) --specs=nosys.specs
 DEPFLAGS = -MT $@ -MMD -MP -MF $(BUILD_DIR)/$*.d
 
+CHKREPORT = cppcheck-report.txt
+CHKFLAGS = --enable=all --error-exitcode=1
+
 BUILD_DIR = build
 OBJS += $(SRCS:%.c=$(BUILD_DIR)/%.o)
 OBJS += $(STM32_SYSINIT:%.c=$(BUILD_DIR)/%.o)
 STARTUP += $(STM32_STARTUP:%.s=$(BUILD_DIR)/%.o)
 
+.PHONY: all
 all: $(TARGET).hex size
 
 $(TARGET).hex: $(TARGET).elf
@@ -54,6 +59,9 @@ DEPFILES := $(OBJS:%.o=%.d)
 $(DEPFILES):
 -include $(DEPFILES)
 
+cppcheck: $(SRCS)
+	$(CPPCHECK) $(CHKFLAGS) --output-file=$(CHKREPORT) $^
+
 .PHONY: flash
 flash: all
 	$(STFLASH) --format ihex write $(TARGET).hex
@@ -64,7 +72,7 @@ size:
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR) $(CHKREPORT)
 
 .PHONY: distclean
 distclean: clean
